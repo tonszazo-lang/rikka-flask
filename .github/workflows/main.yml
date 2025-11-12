@@ -33,16 +33,19 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Cordova
+      - name: Install Cordova and build APK
         run: |
           npm install -g cordova
           cordova create www com.rikka.app "Rikka"
           cd www
           cordova platform add android
+          cordova requirements
           cordova build android
+          find . -type f -name "*.apk"
 
-      - name: Upload APK artifact
+      - name: Upload all APK artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Rikka-Flask-APK
-          path: www/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            **/*.apk
